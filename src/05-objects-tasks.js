@@ -119,72 +119,76 @@ function fromJSON(proto, json) {
  */
 
 const cssSelectorBuilder = {
-  element(value) {
-    function MySuperBaseElementSelector() {
-      this.value = value;
-      this.stringify = function () {
-        return this.value;
-      };
-    }
-    return new MySuperBaseElementSelector(value);
-  },
-
-  id(value) {
-    function MySuperBaseElementSelector() {
-      this.value = value;
-      this.stringify = function () {
-        return `#${value}`;
-      };
-    }
-    return new MySuperBaseElementSelector(value);
-  },
-
-
-  class(value) {
-    function MySuperBaseElementSelector() {
-      this.value = value;
-      this.stringify = function () {
-        return `.${value}`;
-      };
-    }
-    return new MySuperBaseElementSelector(value);
-  },
-
-  attr(value) {
-    function MySuperBaseElementSelector() {
-      this.value = value;
-      this.stringify = function () {
-        return `[${value}]`;
-      };
-    }
-    return new MySuperBaseElementSelector(value);
-  },
-
-  pseudoClass(value) {
-    function MySuperBaseElementSelector() {
-      this.value = value;
-      this.stringify = function () {
-        return `:${value}`;
-      };
-    }
-    return new MySuperBaseElementSelector(value);
-  },
-
-  pseudoElement(value) {
-    function MySuperBaseElementSelector() {
-      this.value = value;
-      this.stringify = function () {
-        return `::${value}`;
-      };
-    }
-    return new MySuperBaseElementSelector(value);
-  },
-
-  combine(/* selector1, combinator, selector2 */) {
+  element() {
     throw new Error('Not implemented');
   },
-
 };
+//   element(value) {
+//     function MySuperBaseElementSelector() {
+//       this.value = value;
+//       this.stringify = function () {
+//         return this.value;
+//       };
+//     }
+//     return new MySuperBaseElementSelector(value);
+//   },
+
+//   id(value) {
+//     function MySuperBaseElementSelector() {
+//       this.value = value;
+//       this.stringify = function () {
+//         return `#${value}`;
+//       };
+//     }
+//     return new MySuperBaseElementSelector(value);
+//   },
+
+
+//   class(value) {
+//     function MySuperBaseElementSelector() {
+//       this.value = value;
+//       this.stringify = function () {
+//         return `.${value}`;
+//       };
+//     }
+//     return new MySuperBaseElementSelector(value);
+//   },
+
+//   attr(value) {
+//     function MySuperBaseElementSelector() {
+//       this.value = value;
+//       this.stringify = function () {
+//         return `[${value}]`;
+//       };
+//     }
+//     return new MySuperBaseElementSelector(value);
+//   },
+
+//   pseudoClass(value) {
+//     function MySuperBaseElementSelector() {
+//       this.value = value;
+//       this.stringify = function () {
+//         return `:${value}`;
+//       };
+//     }
+//     return new MySuperBaseElementSelector(value);
+//   },
+
+//   pseudoElement(value) {
+//     function MySuperBaseElementSelector() {
+//       this.value = value;
+//       this.stringify = function () {
+//         return `::${value}`;
+//       };
+//     }
+//     return new MySuperBaseElementSelector(value);
+//   },
+
+//   combine(/* selector1, combinator, selector2 */) {
+//     throw new Error('Not implemented');
+//   },
+
+// };
 
 
 module.exports = {
