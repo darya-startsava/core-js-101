@@ -6,7 +6,6 @@
  *                                                                                                *
  ************************************************************************************************ */
 
-
 /**
  * Returns the rectangle object with width and height parameters and getArea() method
  *
@@ -30,7 +29,6 @@ function Rectangle(width, height) {
   };
 }
 
-
 /**
  * Returns the JSON representation of specified object
  *
@@ -44,7 +42,6 @@ function Rectangle(width, height) {
 function getJSON(obj) {
   return JSON.stringify(obj);
 }
-
 
 /**
  * Returns the object of specified type from JSON representation
@@ -62,7 +59,6 @@ function fromJSON(proto, json) {
   const values = Object.values(object);
   return new proto.constructor(...values);
 }
-
 
 /**
  * Css selectors builder
@@ -119,77 +115,98 @@ function fromJSON(proto, json) {
  */
 
 const cssSelectorBuilder = {
-  element() {
-    throw new Error('Not implemented');
+  answer: '',
+  selectors: '',
+  errorMessage:
+    'Element, id and pseudo-element should not occur more then one time inside the selector',
+  errorOrderMessage:
+    'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+
+  element: function element(value) {
+    const obj = Object.create(cssSelectorBuilder);
+    obj.answer = this.answer + value;
+    obj.type = 1;
+    if (this.selectors.includes(obj.type)) {
+      throw new Error(this.errorMessage);
+    }
+    if (this.selectors.slice(-1) > obj.type) {
+      throw new Error(this.errorOrderMessage);
+    }
+    obj.selectors = `${this.selectors}${obj.type}`;
+    return obj;
+  },
+
+  id: function id(value) {
+    const obj = Object.create(cssSelectorBuilder);
+    obj.answer = `${this.answer}#${value}`;
+    obj.type = 2;
+    if (this.selectors.includes(obj.type)) {
+      throw new Error(this.errorMessage);
+    }
+    if (this.selectors.slice(-1) > obj.type) {
+      throw new Error(this.errorOrderMessage);
+    }
+    obj.selectors = `${this.selectors}${obj.type}`;
+    return obj;
+  },
+
+  class: function functionClass(value) {
+    const obj = Object.create(cssSelectorBuilder);
+    obj.answer = `${this.answer}.${value}`;
+    obj.type = 3;
+    if (this.selectors.slice(-1) > obj.type) {
+      throw new Error(this.errorOrderMessage);
+    }
+    obj.selectors = `${this.selectors}${obj.type}`;
+    return obj;
+  },
+
+  attr: function attr(value) {
+    const obj = Object.create(cssSelectorBuilder);
+    obj.answer = `${this.answer}[${value}]`;
+    obj.type = 4;
+    if (this.selectors.slice(-1) > obj.type) {
+      throw new Error(this.errorOrderMessage);
+    }
+    obj.selectors = `${this.selectors}${obj.type}`;
+    return obj;
+  },
+
+  pseudoClass: function pseudoClass(value) {
+    const obj = Object.create(cssSelectorBuilder);
+    obj.answer = `${this.answer}:${value}`;
+    obj.type = 5;
+    if (this.selectors.slice(-1) > obj.type) {
+      throw new Error(this.errorOrderMessage);
+    }
+    obj.selectors = `${this.selectors}${obj.type}`;
+    return obj;
+  },
+
+  pseudoElement: function pseudoElement(value) {
+    const obj = Object.create(cssSelectorBuilder);
+    obj.answer = `${this.answer}::${value}`;
+    obj.type = 6;
+    if (this.selectors.includes(obj.type)) {
+      throw new Error(this.errorMessage);
+    }
+    if (this.selectors.slice(-1) > obj.type) {
+      throw new Error(this.errorOrderMessage);
+    }
+    obj.selectors = `${this.selectors}${obj.type}`;
+    return obj;
+  },
+
+  stringify: function stringify() {
+    return this.answer;
+  },
+
+  combine: function combine(selector1, combinator, selector2) {
+    const obj = Object.create(cssSelectorBuilder);
+    obj.answer = `${selector1.answer} ${combinator} ${selector2.answer}`;
+    return obj;
   },
 };
-//   element(value) {
-//     function MySuperBaseElementSelector() {
-//       this.value = value;
-//       this.stringify = function () {
-//         return this.value;
-//       };
-//     }
-//     return new MySuperBaseElementSelector(value);
-//   },
-
-//   id(value) {
-//     function MySuperBaseElementSelector() {
-//       this.value = value;
-//       this.stringify = function () {
-//         return `#${value}`;
-//       };
-//     }
-//     return new MySuperBaseElementSelector(value);
-//   },
-
-
-//   class(value) {
-//     function MySuperBaseElementSelector() {
-//       this.value = value;
-//       this.stringify = function () {
-//         return `.${value}`;
-//       };
-//     }
-//     return new MySuperBaseElementSelector(value);
-//   },
-
-//   attr(value) {
-//     function MySuperBaseElementSelector() {
-//       this.value = value;
-//       this.stringify = function () {
-//         return `[${value}]`;
-//       };
-//     }
-//     return new MySuperBaseElementSelector(value);
-//   },
-
-//   pseudoClass(value) {
-//     function MySuperBaseElementSelector() {
-//       this.value = value;
-//       this.stringify = function () {
-//         return `:${value}`;
-//       };
-//     }
-//     return new MySuperBaseElementSelector(value);
-//   },
-
-//   pseudoElement(value) {
-//     function MySuperBaseElementSelector() {
-//       this.value = value;
-//       this.stringify = function () {
-//         return `::${value}`;
-//       };
-//     }
-//     return new MySuperBaseElementSelector(value);
-//   },
-
-//   combine(/* selector1, combinator, selector2 */) {
-//     throw new Error('Not implemented');
-//   },
-
-// };
-
 
 module.exports = {
   Rectangle,
