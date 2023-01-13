@@ -122,16 +122,24 @@ const cssSelectorBuilder = {
   errorOrderMessage:
     'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
 
+  checkSelectorsUniqueness: function checkSelectorsUniqueness(type) {
+    if (this.selectors.includes(type)) {
+      throw new Error(this.errorMessage);
+    }
+  },
+
+  checkSelectorsOrder: function checkSelectorsOrder(type) {
+    if (this.selectors.slice(-1) > type) {
+      throw new Error(this.errorOrderMessage);
+    }
+  },
+
   element: function element(value) {
     const obj = Object.create(cssSelectorBuilder);
     obj.answer = this.answer + value;
     obj.type = 1;
-    if (this.selectors.includes(obj.type)) {
-      throw new Error(this.errorMessage);
-    }
-    if (this.selectors.slice(-1) > obj.type) {
-      throw new Error(this.errorOrderMessage);
-    }
+    this.checkSelectorsUniqueness(obj.type);
+    this.checkSelectorsOrder(obj.type);
     obj.selectors = `${this.selectors}${obj.type}`;
     return obj;
   },
@@ -140,12 +148,8 @@ const cssSelectorBuilder = {
     const obj = Object.create(cssSelectorBuilder);
     obj.answer = `${this.answer}#${value}`;
     obj.type = 2;
-    if (this.selectors.includes(obj.type)) {
-      throw new Error(this.errorMessage);
-    }
-    if (this.selectors.slice(-1) > obj.type) {
-      throw new Error(this.errorOrderMessage);
-    }
+    this.checkSelectorsUniqueness(obj.type);
+    this.checkSelectorsOrder(obj.type);
     obj.selectors = `${this.selectors}${obj.type}`;
     return obj;
   },
@@ -154,9 +158,7 @@ const cssSelectorBuilder = {
     const obj = Object.create(cssSelectorBuilder);
     obj.answer = `${this.answer}.${value}`;
     obj.type = 3;
-    if (this.selectors.slice(-1) > obj.type) {
-      throw new Error(this.errorOrderMessage);
-    }
+    this.checkSelectorsOrder(obj.type);
     obj.selectors = `${this.selectors}${obj.type}`;
     return obj;
   },
@@ -165,9 +167,7 @@ const cssSelectorBuilder = {
     const obj = Object.create(cssSelectorBuilder);
     obj.answer = `${this.answer}[${value}]`;
     obj.type = 4;
-    if (this.selectors.slice(-1) > obj.type) {
-      throw new Error(this.errorOrderMessage);
-    }
+    this.checkSelectorsOrder(obj.type);
     obj.selectors = `${this.selectors}${obj.type}`;
     return obj;
   },
@@ -176,9 +176,7 @@ const cssSelectorBuilder = {
     const obj = Object.create(cssSelectorBuilder);
     obj.answer = `${this.answer}:${value}`;
     obj.type = 5;
-    if (this.selectors.slice(-1) > obj.type) {
-      throw new Error(this.errorOrderMessage);
-    }
+    this.checkSelectorsOrder(obj.type);
     obj.selectors = `${this.selectors}${obj.type}`;
     return obj;
   },
@@ -187,12 +185,8 @@ const cssSelectorBuilder = {
     const obj = Object.create(cssSelectorBuilder);
     obj.answer = `${this.answer}::${value}`;
     obj.type = 6;
-    if (this.selectors.includes(obj.type)) {
-      throw new Error(this.errorMessage);
-    }
-    if (this.selectors.slice(-1) > obj.type) {
-      throw new Error(this.errorOrderMessage);
-    }
+    this.checkSelectorsUniqueness(obj.type);
+    this.checkSelectorsOrder(obj.type);
     obj.selectors = `${this.selectors}${obj.type}`;
     return obj;
   },
